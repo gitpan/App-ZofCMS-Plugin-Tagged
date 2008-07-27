@@ -1,0 +1,10 @@
+    {
+        body        => \'index.tmpl',
+        t => {
+            cookie_foo  => '<TAG:TNo cookies:{d}{cookies}{foo}>',
+            query_foo   => '[<TAG:Q:{foo}>]',
+        },
+        set_cookies => [ ['foo', 'bar' ]],
+        plugins     => [ { Cookies => 10 }, { Tagged => 20 } ],
+    }
+
