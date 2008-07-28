@@ -3,7 +3,7 @@ package App::ZofCMS::Plugin::Tagged;
 use warnings;
 use strict;
 
-our $VERSION = '0.0101';
+our $VERSION = '0.0201';
 
 use Data::Transformer;
 
@@ -47,13 +47,18 @@ sub callback {
         }
 
         my $tag_result = $Tags{ $cell };
+        
+        my @parts = $var =~ /([{\[]) \s* ( [^}\]]+? ) \s* [}\]]/xg;
 
-        for ( $var =~ /{ \s* ( [^}]+? ) \s* }/xg ) {
-            $tag_result = $tag_result->{ $_ };
+        for ( map [splice @parts, 0, 2 ], 0 .. $#parts/2 ) {
+            $tag_result = $_->[0] eq '{'
+                        ? $tag_result->{ $_->[1] }
+                        : $tag_result->[ $_->[1] ]
         }
 
         $tag_result = $default
             unless defined $tag_result;
+
         if ( $@ ) {
             $Tags{T}{t}{tagged_error} = $@;
         }
@@ -143,7 +148,7 @@ C<< plugins => [ {Tagged => 10}, { SomePlugin => 20 }, { Tagged2 => 30 } ] >>
 
     foo => '<TAG:Q:{foo}>',
     bar => 'beeer <TAG:Qdefault:{bar}>  baz',
-    baz => 'foo <TAG:T:{d}{baz}> bar',
+    baz => 'foo <TAG:T:{d}{baz}[1]{beer}[2]> bar',
     nop => "<TAG:NOOP><TAG:T:I'm NOT a tag!!!>",
 
 B<NOTE: everything in the tag is CASE-SENSITIVE>
@@ -177,6 +182,11 @@ hold respective hashrefs (same as "cells"):
     <TAG:Qnone:{foo}>          same as   $query->{foo} // 'none'
     <TAG:Txxx:{t}{bar}>        same as   $template->{t}{bar} // 'xxx'
 
+    # arrayrefs are supported as well
+    
+    <TAG:T:{d}{foo}[0]>        same as   $template->{d}{foo}[0]
+    <TAG>C:{plugins}[1]>       same as   $config->{plugins}[1]
+
 =head1 THE NOOP TAG
 
     nop => "<TAG:NOOP><TAG:T:I'm NOT a tag!!!>",
@@ -208,6 +218,11 @@ run the helper script to copy this module into your $core_dir/CPAN/
 directory
 
     zofcms_helper --nocore --core your_sites_core --cpan Data::Transformer
+
+=head1 CAVEATS
+
+If your tag references some element of ZofCMS template which itself contains
+a tag the behaviour is undefined.
 
 =head1 SEE ALSO
 
