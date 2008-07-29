@@ -1,6 +1,6 @@
 ---
 name: App-ZofCMS-Plugin-Tagged
-version: 0.0201
+version: 0.0251
 author:
   - 'Zoffix Znet <zoffix@cpan.org>'
 abstract: 'ZofCMS plugin to fill templates with data from query, template variables and configuration using <TAGS>'
@@ -14,7 +14,7 @@ build_requires:
 provides:
   App::ZofCMS::Plugin::Tagged:
     file: lib/App/ZofCMS/Plugin/Tagged.pm
-    version: 0.0201
+    version: 0.0251
 generated_by: Module::Build version 0.2808
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html

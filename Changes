@@ -1,5 +1,8 @@
 Revision history for App-ZofCMS-Plugin-Tagged
 
+0.0251  July 29, 2008
+        Added the <TAG:RAND>
+
 0.0201  July 28, 2008
         Added support for arrayrefs
 

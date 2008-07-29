@@ -3,7 +3,7 @@ package App::ZofCMS::Plugin::Tagged;
 use warnings;
 use strict;
 
-our $VERSION = '0.0201';
+our $VERSION = '0.0251';
 
 use Data::Transformer;
 
@@ -35,8 +35,21 @@ sub callback {
 
     while ( my ( $tag  ) = $$in =~ /<TAG:([^>]+)>/ ) {
         if ( $tag eq 'NOOP' ) {
-            $$in =~ s/<TAG:([^>]+)>//;
+            $$in =~ s/<TAG:[^>]+>//;
             return;
+        }
+        elsif ( $tag =~ s/^RAND\s*// ) {
+            my $integer_form;
+            if ( $tag =~ s/^I\s*// ) {
+                $integer_form = 1;
+            }
+            my $rand_number = $tag =~ /^[\d.]+$/ ? rand($tag) : rand;
+
+            if ( $integer_form ) {
+                $rand_number = int $rand_number;
+            }
+
+            $$in =~ s/<TAG:[^>]+>/$rand_number/;
         }
 
         my ( $cell, $var ) = split /:/, $tag, 2;
@@ -63,7 +76,7 @@ sub callback {
             $Tags{T}{t}{tagged_error} = $@;
         }
 
-        $$in =~ s/<TAG:([^>]+)>/$tag_result/;
+        $$in =~ s/<TAG:[^>]+>/$tag_result/;
 
     }
 }
@@ -150,6 +163,7 @@ C<< plugins => [ {Tagged => 10}, { SomePlugin => 20 }, { Tagged2 => 30 } ] >>
     bar => 'beeer <TAG:Qdefault:{bar}>  baz',
     baz => 'foo <TAG:T:{d}{baz}[1]{beer}[2]> bar',
     nop => "<TAG:NOOP><TAG:T:I'm NOT a tag!!!>",
+    random => '<TAG::RAND I 100>',
 
 B<NOTE: everything in the tag is CASE-SENSITIVE>
 
@@ -186,6 +200,27 @@ hold respective hashrefs (same as "cells"):
     
     <TAG:T:{d}{foo}[0]>        same as   $template->{d}{foo}[0]
     <TAG>C:{plugins}[1]>       same as   $config->{plugins}[1]
+
+=head1 THE RAND TAG
+
+    rand1 => '<TAG:RAND>',
+    rand2 => '<TAG:RAND 100>',
+    rand3 => '<TAG:RAND I 200>',
+    rand4 => '<TAG:RAND100>',
+    rand5 => '<TAG:RANDI100>',
+
+The I<RAND tag> will be replaced by a pseudo-random number (obtained from
+perl's rand() function). In it's plainest form, C<< <TAG:RAND> >>, it
+will be replaced by exactly what comes out from C<rand()>, in other
+words, same as calling C<rand(1)>. If a letter C<'I'> follows word
+C<'RAND'> in the tag, then C<int()> will be called on the result of
+C<rand()>. When a number follows word C<RAND>, that number will be used
+in the call to C<rand()>. In other words, tag C<< <TAG:RAND 100> >>
+will be replaced by a number which is obtained by the call to
+C<rand(100)>. Note: the number must be B<after> the letter C<'I'> if you
+are using it. You can have spaces between the letter C<'I'> or the number
+and the word C<RAND>. In other words, these tags are equal:
+C<< <TAG:RANDI100> >> and C<< <TAG:RAND I 100> >>.
 
 =head1 THE NOOP TAG
 
