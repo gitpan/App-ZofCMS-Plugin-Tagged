@@ -9,6 +9,7 @@ WriteMakefile
           'VERSION_FROM' => 'lib/App/ZofCMS/Plugin/Tagged.pm',
           'PREREQ_PM' => {
                            'Test::More' => 0,
+                           'App::ZofCMS' => '0.0103',
                            'Data::Transformer' => '0.04'
                          }
         )

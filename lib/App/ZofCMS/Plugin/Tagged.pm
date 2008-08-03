@@ -3,7 +3,7 @@ package App::ZofCMS::Plugin::Tagged;
 use warnings;
 use strict;
 
-our $VERSION = '0.0251';
+our $VERSION = '0.0252';
 
 use Data::Transformer;
 
