@@ -1,14 +1,17 @@
 Revision history for App-ZofCMS-Plugin-Tagged
 
-0.0252  August 3, 2008
-        Fixed broken prereqs
+0.0253  2013-11-10
+        - Minor fixes to comply with specs and Kwalitee game
 
-0.0251  July 29, 2008
-        Added the <TAG:RAND>
+0.0252  2008-08-03
+        - Fixed broken prereqs
 
-0.0201  July 28, 2008
-        Added support for arrayrefs
+0.0251  2008-07-29
+        - Added the <TAG:RAND>
 
-0.0101  July 27, 2008
-        First version, released on an unsuspecting world.
+0.0201  2008-07-28
+        - Added support for arrayrefs
+
+0.0101  2008-07-27
+        - First version, released on an unsuspecting world.
 

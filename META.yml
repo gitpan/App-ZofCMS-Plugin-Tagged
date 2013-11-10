@@ -1,22 +1,26 @@
 ---
-name: App-ZofCMS-Plugin-Tagged
-version: 0.0252
+abstract: 'ZofCMS plugin to fill templates with data from query, template variables and configuration using <TAGS>'
 author:
   - 'Zoffix Znet <zoffix@cpan.org>'
-abstract: 'ZofCMS plugin to fill templates with data from query, template variables and configuration using <TAGS>'
-license: perl
-resources:
-  license: http://dev.perl.org/licenses/
-requires:
-  App::ZofCMS: 0.0103
-  Data::Transformer: 0.04
 build_requires:
   Test::More: 0
+configure_requires:
+  Module::Build: 0
+dynamic_config: 1
+generated_by: 'Module::Build version 0.4007, CPAN::Meta::Converter version 2.132830'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: App-ZofCMS-Plugin-Tagged
 provides:
   App::ZofCMS::Plugin::Tagged:
     file: lib/App/ZofCMS/Plugin/Tagged.pm
-    version: 0.0252
-generated_by: Module::Build version 0.2808
-meta-spec:
-  url: http://module-build.sourceforge.net/META-spec-v1.2.html
-  version: 1.2
+    version: 0.0253
+requires:
+  App::ZofCMS: 0.0103
+  Data::Transformer: 0.04
+  perl: 5.006
+resources:
+  license: http://dev.perl.org/licenses/
+version: 0.0253

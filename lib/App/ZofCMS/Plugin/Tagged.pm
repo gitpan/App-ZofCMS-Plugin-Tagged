@@ -3,7 +3,7 @@ package App::ZofCMS::Plugin::Tagged;
 use warnings;
 use strict;
 
-our $VERSION = '0.0252';
+our $VERSION = '0.0253';
 
 use Data::Transformer;
 
@@ -76,6 +76,7 @@ sub callback {
             $Tags{T}{t}{tagged_error} = $@;
         }
 
+        $tag_result = '' unless defined $tag_result;
         $$in =~ s/<TAG:[^>]+>/$tag_result/;
 
     }
@@ -83,6 +84,8 @@ sub callback {
 
 1;
 __END__
+
+=encoding utf8
 
 =head1 NAME
 
